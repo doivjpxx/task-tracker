@@ -50,3 +50,37 @@ impl TaskImpl for Task {
         self.updated_at = chrono::Local::now().naive_local();
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_new_task() {
+        let task = Task::new(1, "Task 1".to_string());
+        assert_eq!(task.id, 1);
+        assert_eq!(task.description, "Task 1");
+        assert_eq!(task.status, Status::Todo);
+    }
+
+    #[test]
+    fn test_update_task() {
+        let mut task = Task::new(1, "Task 1".to_string());
+        task.update("Updated Task 1".to_string());
+        assert_eq!(task.description, "Updated Task 1");
+    }
+
+    #[test]
+    fn test_mark_in_progress() {
+        let mut task = Task::new(1, "Task 1".to_string());
+        task.mark_in_progress();
+        assert_eq!(task.status, Status::InProgress);
+    }
+
+    #[test]
+    fn test_mark_done() {
+        let mut task = Task::new(1, "Task 1".to_string());
+        task.mark_done();
+        assert_eq!(task.status, Status::Done);
+    }
+}
